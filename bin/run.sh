@@ -47,4 +47,4 @@ admin.email=${ADMIN_EMAIL}
 admin.pass=${ADMIN_PASS}
 " > /config/server.properties
 
-java -jar /blynk/server.jar -dataFolder /data -serverConfig /config/server.properties
+java -jar /blynk/server.jar -dataFolder /data -serverConfig /config/server.properties -mailConfig /config/mail.properties

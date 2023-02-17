@@ -1,0 +1,23 @@
+version: '3.3'
+volumes:
+  blynk-data:
+  blynk-config:
+  blynk-data-backup:
+  blynk-run:
+services:
+  blynk-server:
+    image: mzabolotnov/blynk_server:2.0
+    volumes:
+      - blynk-data:/data
+      - blynk-config:/config
+      - blynk-data-backup:/data/backup
+      - blynk-run:/blynk/bin
+    ports:
+      - "8080:8080"
+      - "9443:9443"
+      - "8440:8440"
+    networks:
+      - blynk-network
+networks:
+  blynk-network:
+   driver: bridge

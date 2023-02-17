@@ -65,7 +65,7 @@ ENV ENABLE_RAW_DB_DATA_STORE false
 ENV INITIAL_ENERGY 100000
 ENV ADMIN_EMAIL admin@blynk.cc
 ENV ADMIN_PASS admin
-RUN mkdir /blynk
+RUN mkdir -p /blynk/bin
 RUN curl -L https://github.com/mzabolotnov/blynk-server/releases/download/${BLYNK_SERVER_VERSION}/server-${BLYNK_SERVER_VERSION}.jar  > /blynk/server.jar
 
 
@@ -73,15 +73,15 @@ RUN curl -L https://github.com/mzabolotnov/blynk-server/releases/download/${BLYN
 # Create data folder. To persist data, map a volume to /data
 RUN mkdir /data
 # Create configuration folder. To persist data, map a file to /config/server.properties
-RUN mkdir /config && touch /config/server.properties
+RUN mkdir /config && touch /config/server.properties && touch /config/mail.properties
 
-VOLUME ["/config", "/data/backup"]
+VOLUME ["/config", "/data/backup", "/data", "/blink/bin"]
 
-RUN mkdir -p /usr/local/bin
-ADD ./bin /usr/local/bin
-RUN chmod +x /usr/local/bin/*.sh
+#RUN mkdir -p /usr/local/bin
+ADD ./bin /blynk/bin
+RUN chmod +x /blynk/bin/*.sh
 
 EXPOSE ${HARDWARE_MQTT_PORT} ${HARDWARE_MQTT_PORT_SSL} ${HTTP_PORT} ${HTTPS_PORT}
 
 WORKDIR /data
-ENTRYPOINT ["/usr/local/bin/run.sh"]
+ENTRYPOINT ["/blynk/bin/run.sh"]
